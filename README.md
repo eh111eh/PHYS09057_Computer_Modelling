@@ -1,2 +1,8 @@
 # PHYS09057_Computer_Modelling
-Assignments &amp; Course Materials
+
+PHYS09057 Assignments &amp; Course Materials
+
+- Unit 1: Classes & Copilot
+- Unit 2: Numpy
+
+TBA
