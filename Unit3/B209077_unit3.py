@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+import scipy.integrate as integrate
 
 # ------------------ Task 4.1 Adding numerical integration methods ------------------
 
@@ -27,11 +28,13 @@ class Cosmology:
 
     def distance_rectangle_rule(self, z, n):
         """
-        Compute the cosmological distance using the Rectangle rule for numerical integration.
+        Compute the cosmological distance using the Rectangle rule for integration.
         It approximates the integral using the rectangle rule, where the integrand
         is evaluated at equally spaced intervals, and the total area is approximated by summing
         the areas of rectangles under the curve. Due to c [km/s] and H0 [km/s/Mpc],
-        the resulted distance is in Megaparsecs (Mpc).
+        the resulted distance is in Megaparsecs (Mpc). Here, since the speed of light,
+        c, is a constant and does not change its value, so let's set it as a numeric
+        value '3e5 [km/s]'.
 
         Parameters:
             z (float): The upper limit of the integration (redshift)
@@ -216,31 +219,103 @@ def test_cumulative_trapezoid():
 def explore_parameters():
     """
     Explore the effect of changing H0, Omega_m, and Omega_lambda on the distance modulus mu(z).
+    Produce three separate plots for each parameter change.
     """
     z_values = np.linspace(0, 1.0, 100)
 
-    # Vary H0, Omega_m, and Omega_lambda
+    # Plot 1: Varying H0 while keeping Omega_m and Omega_lambda constant
     plt.figure()
     for H0 in [60, 70, 80]:
         model = Cosmology(H0=H0, Omega_m=0.3, Omega_lambda=0.7)
         mu = model.distance_modulus(1.0, 1000, z_values)
         plt.plot(z_values, mu, label=f'H0 = {H0}')
+    plt.xlabel('Redshift z')
+    plt.ylabel('Distance Modulus mu(z)')
+    plt.title("Effect of Varying H0 on Distance Modulus")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
+    # Plot 2: Varying Omega_m while keeping H0 and Omega_lambda constant
+    plt.figure()
     for Omega_m in [0.2, 0.3, 0.4]:
         model = Cosmology(H0=70, Omega_m=Omega_m, Omega_lambda=0.7)
         mu = model.distance_modulus(1.0, 1000, z_values)
         plt.plot(z_values, mu, label=f'Omega_m = {Omega_m}')
+    plt.xlabel('Redshift z')
+    plt.ylabel('Distance Modulus mu(z)')
+    plt.title("Effect of Varying Omega_m on Distance Modulus")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
+    # Plot 3: Varying Omega_lambda while keeping H0 and Omega_m constant
+    plt.figure()
     for Omega_lambda in [0.6, 0.7, 0.8]:
         model = Cosmology(H0=70, Omega_m=0.3, Omega_lambda=Omega_lambda)
         mu = model.distance_modulus(1.0, 1000, z_values)
         plt.plot(z_values, mu, label=f'Omega_lambda = {Omega_lambda}')
-
     plt.xlabel('Redshift z')
     plt.ylabel('Distance Modulus mu(z)')
+    plt.title("Effect of Varying Omega_lambda on Distance Modulus")
     plt.legend()
     plt.grid(True)
     plt.show()
+
+# ------------------ Additional test function ------------------
+
+def check_scipy_custom():
+    """
+    Additional function to compare results from our custom functions and scipy libraries.
+    """
+    model = Cosmology(H0=72.0, Omega_m=0.3, Omega_lambda=0.7)
+    z = 1.0
+    n = 10000
+
+    # Define the integrand function using model parameters
+    integrand_function = lambda z: model.integrand(z)
+
+    # Scipy integration results
+    rect_scipy = integrate.fixed_quad(integrand_function, 0, z, n=n)[0]
+    trap_scipy = integrate.quad(integrand_function, 0, z, limit=n)[0]
+    simp_scipy = integrate.simpson([integrand_function(z_i) for z_i in np.linspace(0, z, n)], dx=z/n)
+
+    # Convert results to distance in Mpc
+    rect_scipy_distance = (3e5 / model.H0) * rect_scipy
+    trap_scipy_distance = (3e5 / model.H0) * trap_scipy
+    simp_scipy_distance = (3e5 / model.H0) * simp_scipy
+
+    # Calculate distances using our custom functions
+    rect_distance = model.distance_rectangle_rule(z, n)
+    trap_distance = model.distance_trapezoid_rule(z, n)
+    simp_distance = model.distance_simpsons_rule(z, n)
+
+    print(f"Rectangle Rule Distance (Custom): {rect_distance:.5f} Mpc")
+    print(f"Rectangle Rule Distance (SciPy): {rect_scipy_distance:.5f} Mpc")
+    print(f"Difference: {abs(rect_distance - rect_scipy_distance):.5f} Mpc\n")
+
+    print(f"Trapezoid Rule Distance (Custom): {trap_distance:.5f} Mpc")
+    print(f"Trapezoid Rule Distance (SciPy): {trap_scipy_distance:.5f} Mpc")
+    print(f"Difference: {abs(trap_distance - trap_scipy_distance):.5f} Mpc\n")
+
+    print(f"Simpson's Rule Distance (Custom): {simp_distance:.5f} Mpc")
+    print(f"Simpson's Rule Distance (SciPy): {simp_scipy_distance:.5f} Mpc")
+    print(f"Difference: {abs(simp_distance - simp_scipy_distance):.5f} Mpc\n")
+
+    # Cumulative trapezoid validation
+    z_values = np.linspace(0, z, n)
+    custom_cumulative_distances = model.cumulative_trapezoid(z, n)
+
+    # SciPy cumulative trapezoid integration
+    cumulative_trap_scipy = integrate.cumulative_trapezoid([model.integrand(z_i) for z_i in z_values], z_values, initial=0)
+    cumulative_trap_scipy_distances = (3e5 / model.H0) * cumulative_trap_scipy
+
+    # Print difference between custom and scipy cumulative trapezoid results
+    print("\nCumulative Trapezoid Rule Validation:")
+    for i in range(0, n, n // 10):
+        print(f"z={z_values[i]:.2f}: Custom = {custom_cumulative_distances[i]:.5f} Mpc, "
+              f"SciPy = {cumulative_trap_scipy_distances[i]:.5f} Mpc, "
+              f"Difference = {abs(custom_cumulative_distances[i] - cumulative_trap_scipy_distances[i]):.5f} Mpc")
 
 def main():
     """
@@ -248,8 +323,9 @@ def main():
         i. Tests on the three numerical integration methods (Rectangle, Trapezoid, Simpson)
            to check if they produce the correct cosmological distance for z = 1.
            The expected distance is approximately 3200 Mpc for the default cosmological parameters.
-
         ii. The convergence test and the cumulative trapezoid test.
+        iii. Explorational function to explore the effect of changing parameters.
+        iv. Additional test function to compare scipy libraries and our custom functions.
     """
     model = Cosmology(H0=72.0, Omega_m=0.3, Omega_lambda=0.7)
     z = 1.0
@@ -265,19 +341,22 @@ def main():
     print(f"Distance (Simpson's Rule): {dist_simp:.2f} Mpc")
 
     # Check if they are close to the expected value ~3200 Mpc
-    expected_distance = 3200  # approx distance at z = 1.0 with default parameters
+    expected_distance = 3200
     assert np.isclose(dist_rect, expected_distance, rtol=0.1), "Rectangle rule result is too far from the expected value"
     assert np.isclose(dist_trap, expected_distance, rtol=0.1), "Trapezoid rule result is too far from the expected value"
     assert np.isclose(dist_simp, expected_distance, rtol=0.1), "Simpson's rule result is too far from the expected value"
 
-    # Call the convergence test
+    # The convergence test
     convergence_test()
 
-    # Call the cumulative trapezoid test
+    # The cumulative trapezoid test
     test_cumulative_trapezoid()
 
     # The effect of changing parameters
     explore_parameters()
+
+    # Additional test function to compare scipy libraries and custom functions
+    check_scipy_custom()
 
 if __name__ == "__main__":
     main()
