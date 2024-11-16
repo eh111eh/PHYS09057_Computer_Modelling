@@ -4,5 +4,6 @@ PHYS09057 Assignments &amp; Course Materials
 
 - Unit 1: Classes & Copilot
 - Unit 2: Numpy
+- Unit 3: Numerical Integration
 
 TBA
