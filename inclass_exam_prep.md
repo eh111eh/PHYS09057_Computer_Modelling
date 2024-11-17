@@ -1,3 +1,7 @@
+# Table of Contents
+1. Course Notes
+2. Introductory lecture & Workshop mini-lectures
+
 # Course Notes
 ## Chapter 3. Beyond SciProg
 ### 3.1. Basic Python
@@ -316,7 +320,7 @@ tensor = torch.tensor([1.0, 2.0, 3.0]).to(device)
 print(tensor) # runs computations on GPU if available.
 ```
 
-# Workshop mini-lectures & Introductory lecture
+# Introductory lecture & Workshop mini-lectures
 ## Introductory lecture
 - Common python data types
 
@@ -368,3 +372,63 @@ print(sys.argv)
 # ["newton.py", "9.81", "apple"]
 G = float(sys.argv[1])
 ```
+
+## Workshop 2 mini-lecture: Object-oriented programming
+Objects group data and functions for accessing and operating on that data
+- Class: A blueprint(template) for creating objects. Define the data (attribute) and behaviour (methods) of an object.
+- Instance: A specific object created from a class.
+
+Python is designed for OOP.
+Structure of a Python object:
+- Attributes: data values for one instance.
+- Methods: functions acting on one instance.
+- Special methods: built-in methods for special behaviour, i.e., `__init__`
+```python
+my_circle = Circle(r, x0, y0, colour)    # Making an instance
+c = my_circle.radius                     # Attribute
+A = my_circle.compute_area()             # Calling a method
+```
+
+in **Circle** class:
+```python
+import numpy as np
+class Circle:
+	def __init__(self, radius, x_pos, y_pos, colour):
+		self.radius = radius
+		self.position = np.array([x_pos, y_pos])
+		self.colour = colour
+
+	def compute_area(self):
+		return np.pi * self.radius**2
+```
+- `class Circle` defines the name of the class, starts the methods.
+- `__init__` defines how to create a new circle object. It usually set all attributes that an object has.
+- `self` is the first argument to most python methods, indicating "this specific Circle".
+- `self.colour = colour` is an attribute, accessed by `c = Circle(...)` -> `c.colour`.
+- `compute_area` function is a (non-special) method of the class. Methods can have arguments and take another instance like `def compute_overlap(self, other_circle):`
+
+Using **Circle** class
+```
+# Import the Circle class from other file circle.py
+from circle import Circle
+
+# Initialise two circle object instances
+circle1 = Circle(1.0, 2.0, 0.0, "red")
+circle2 = Circle(1.0, 3.0, 3.0, "blue")
+
+# Obtain some results using methods
+area1 = circle1.compute_area()
+overlap = circle1.compute_overlap(circle2)
+
+# Modify instance properties directly
+circle1.radius = 2.0
+circle1.position[0] = -3.5
+
+circle2.radius = circle1.radius
+```
+
+Brainstorming process: what algorithm? -> what classes? -> what properties of class? -> what methods/types?
+
+## Workshop 3 mini-lecture
+
+## Workshop 4 mini-lecture
