@@ -1,3 +1,4 @@
+# Course Notes
 ## Chapter 3. Beyond SciProg
 ### 3.1. Basic Python
 - Role of `__init__` and `self`:
@@ -313,4 +314,57 @@ import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 tensor = torch.tensor([1.0, 2.0, 3.0]).to(device)
 print(tensor) # runs computations on GPU if available.
+```
+
+# Workshop mini-lectures & Introductory lecture
+## Introductory lecture
+- Common python data types
+
+|     float      |     real numbers, stored to ~16 sig figs     |    3.14, 2.5, 6.022e23   |
+| -------------- |  ------------------------------------------- |  ----------------------  |
+|     int        |     (integer) whole number value             |    1, 99, 2474           |
+|     str        |     (string) text                            |    'AB', 'Hello', '2.5'  |
+|     bool       |     (boolean) T or F                         |    True, False           |
+
+- Composite types
+
+|     List       |     L = [0, 1, 1.33, "abc", word, pi]        |    Mutable               |
+| -------------- |  ------------------------------------------- |  ----------------------  |
+|     Tuple      |     T = (1, 2, 3, "abc")                     |    Immutable             |
+|  Dict(ionary)  |     D = {"key" : "value"}                    |                          |
+
+### File input/output <br/>
+#### i. Writing to a file: <br/>
+- Use `open()` function with the mode `"w"` to open a file for writing.
+- `write()` method writes text to the file.
+  ```python
+  with open("filename.txt", "w") as f:
+  	f.write("Hello there\n")
+  ```
+#### ii. Reading from a file: <br/>
+- Use `open()` with the mode `"r"` to open a file for reading.
+- `readline()` method reads a single line from the file. <br/>
+```python
+with open("filename.txt", "r") as f:
+	greeting = f.readline()
+print(greeting) # Return: Hello there
+```
+#### iii. String functions: <br/>
+- Functions like `.split()` can process text read from a file, i.e., splitting lines into words or values.
+```python
+line = "Hello there\n"
+words = line.split() # splits into ['Hello', 'there']
+```
+
+### Command line
+```python
+python newton.py 9.81 apple
+%run newton.py 9.81 apple
+```
+```python
+import sys
+print(sys.argv)
+# this is a list and will print:
+# ["newton.py", "9.81", "apple"]
+G = float(sys.argv[1])
 ```
