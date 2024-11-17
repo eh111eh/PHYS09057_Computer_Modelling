@@ -62,3 +62,17 @@
 
 - Object-oriented Programming
 	- Use the predefined Complex class in our code by `from <filename> import Complex`
+   	- Particular instance method `__str__()` prints instances of the class using the standard `print()` command.
+  	```python
+   	class Complex:
+   	# ...
+   	def __str__(self):
+   		if self.imag >= 0.0:
+   			return "{0:f} + {1:f} i".format(self.real, self.imag)
+   		else:
+   			return "{0:f} - {1:f} i".format(self.real, -self.imag)
+	...
+   	>>> c = Complex(1.0, -3.0)
+   	>>> print(c)
+   	1.000000 - 3.000000 i
+   	```
