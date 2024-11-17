@@ -62,6 +62,86 @@
 		print(f"My name is {name} and I am {age} years old.")
     ```
 ### 3.2. Numpy
+#### 3.2.1 Loading numpy and creating arrays
+Numpy: library used for numerical and scientific computing. Arrays in numpy are more efficient and structured than Python lists.
+- Use `import numpy as mp` to import numpy.
+- Create arrays using `np.array()`.
+- All elements in a numpy array must be of the same types, and the type can be explicitly set.
+Example:
+```python
+import numpy as mp
+array = np.array([[0, 1], [1.0, 0]], dtype=float)
+>>> print(array)
+[[0.  1.  ]
+[1.  0.  ]]
+```
+
+#### 3.2.2 Maths with Arrays
+Numpy supports element-wise and matrix mathematical operations directly on arrays.
+- Arithmetic operators like `+`, `-`, `*`, `/` are element-wise.
+- Use `np.dot()` or `@` for matrix multiplication.
+- Numpy includes universal functions like `np.exp()` or `np.log()` for element-wise operations.
+Example:
+```python
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+>>> print(a + b)
+[5, 7, 9]
+>>> print(np.dot(a, b))
+32 # Dot product
+```
+
+#### 3.2.3 Reshaping and Slicing
+Arrays can be reshaped or sliced to access specific elements or change their structure.
+- Use `.reshape()` to change the shape of an array.
+- Use slicing with colons(`:`) to extract parts of an array.
+Example:
+```python
+array = np.arange(12).reshape(3, 4) # reshape into 3 rows and 4 columns
+>>> print(array[:, 1])
+[1, 5, 9] # Second column
+```
+
+#### 3.2.4 Broadcasting
+Numpy automatically handles arrays of different shapes during arithmetic if their shapes are compatible.
+- Dimensions must match or one must be 1 for broadcasting to occur.
+Example:
+```python
+a = np.array([1, 2, 3])
+b = np.array([[1], [2], [3]])
+>>> print(a + b)
+[[2 3 4]
+ [3 4 5]
+ [4 5 6]]
+```
+
+#### 3.2.5 Copying: A precautionary Tale
+Numpy arrays are mutable, and assigning them directly creates a reference, not a copy.
+- Use `.copy()` to create a separate array.
+Example:
+```python
+a = np.array([1, 2, 3])
+b = a
+a[0] = 99
+print(b) # Output: [99 2 3]  (reference)
+c = a.copy()
+a[0] = 42
+print(c) # Output: [99 2 3]  (independent copy)
+```
+
+#### 3.2.6 Per-Axis Operations
+Many numpy functions can operate along specific axes of a multidimensional array.
+- Summing along rows or columns using `axis` parameter: `axis=0` operates downwards, `axis=1` operates horizontally.
+Example:
+```python
+array = np.array([[1, 2, 3], [4, 5, 6]])
+print(np.sum(array, axis=0)) # Output: [5 7 9]  (column sum)
+print(np.sum(array, axis=1)) # Output: [6 15]   (row sum)
+```
+
+#### 3.2.7 Performance
+Numpy is faster than native Python for large datasets due to its C-based implementation and optimised libraries.
+- Operations on numpy arrays are faster than equivalent list operations.
 
 ### 3.3 Object-oriented Programming
 - Method: instance / static / class methods. <br/>
