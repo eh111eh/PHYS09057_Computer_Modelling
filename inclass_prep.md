@@ -1,13 +1,14 @@
 - Role of `__init__` and `self`:
-```python
- class A(object):
+	```python
+	 class A(object):
 		def __init__(self):
 			self.x = 'Hello'
 		def method_a(self, foo):
 			print self.x + ' ' + foo
-	The self variable represents the instance of the object itself.
-	The __init__() method takes arguments and assigns them to properties of the object.
-```
+ 	```
+	The `self` variable represents the instance of the object itself. <br/>
+	The `__init__()` method takes arguments and assigns them to properties of the object.
+
 - Default argument values <br/>
 	i. Non-default arguments must come before those with default values <br/>
 	Problematic example:
@@ -61,6 +62,46 @@
 - Numpy
 
 - Object-oriented Programming
+  	- Method: instance / static / class methods. <br/>
+  	  i. Instance methods: Require `self` as the first parameter, used to interact with the instance's attributes and other instance methods. <br/>
+  	  Example:
+  	  ```python
+  	  class Circle:
+  	  	def __init__(self, radius):
+  	  		self.radius = radius
+
+  	  	def area(self):
+  	  		return 3.14 * self.radius ** 2
+
+  	  >>> circle = Circle(5)
+  	  >>> print(circle.area())
+  	  78.53975
+  	  ```
+  	  ii. Static methods: Doesn't depend on instances or class, defined with `@staticmethod` decorator, doesn't require `self` or `cls` parameter. <br/>
+  	  Example:
+  	  ```python
+  	  class Circle:
+  	  	@staticmethod
+  	  	def pi():
+  	  		return 3.14
+
+  	  >>> print(Cicle.pi())
+  	  3.14
+  	  ```
+  	  iii. Class methods: Work with the class itself, not the instance, defined with `@classmethod` decorator, takes `cls` as the first parameter. <br/>
+  	  Example:
+  	  ```python
+  	  class Circle:
+  	  	scale = 1
+
+  	  	@classmethod
+  	  	def set_scale(cls, new_scale):
+  	  		cls.scale = new_scale
+
+  	  >>> Circle.set_scale(2)
+  	  >>> print(Circle.scale)
+  	  2
+  	  ```
 	- Use the predefined Complex class in our code by `from <filename> import Complex`
    	- Particular instance method `__str__()` prints instances of the class using the standard `print()` command.
   	```python
@@ -76,3 +117,34 @@
    	>>> print(c)
    	1.000000 - 3.000000 i
    	```
+	- Magic methods: Define the behaviour of objects for specific operations, allow customisation of python's built-in behaviours, i.e., addition, string representation. <br/>
+   	Example:
+   	```python
+    	class Vector:
+    		def __init__(self, x, y):
+    			self.x = x
+    			self.y =y
+
+    		def __add__(self, other):
+    			return Vector(self.x + other.x, self.y + other.y)
+
+    		def __str__(self):
+    			return f"Vector({self.x}, {self.y})"
+
+    	>>> v1 = Vector(1, 2)
+    	>>> v2 = Vector(3, 4)
+    	>>> v3 = v1 + v2
+    	>>> print(v3)
+    	Vector(4, 6)
+    ```
+    Other magic methods: <br/>
+    |     Method      |     Operator     |
+    | --------------- | ---------------- |
+    |     __add__     |        +         |
+    |     __sub__     |        -         |
+    |     __mul__     |        *         |
+    |     __truediv__ |        /         |
+    |     __mod__     |        %         |
+    |     __pow__     |        **        |
+    |    __floordiv__ |        //        |
+    
