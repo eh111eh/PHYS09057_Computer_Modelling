@@ -278,3 +278,39 @@ Real numbers (floating-point) are stored approximately due to finite precision.
   ```python
   print(1e20 + 1 - 1e20) # returns 0.0 instead of 1. Idiot.
   ```
+
+## Appendix C. Modern computer hardware
+### C.1. Central Processing Unit (CPU)
+The CPU is the brain of the computer, performing basic arithmetic, logic, control, and input/output operations.
+- It connects to main memory via a bus, enabling fast data transfer.
+- Tasks are performed through specialised components like FPU and IU. <br/>
+
+|     Floating point operations                               |            Integer operations     |
+|     ------------------------------------------------------- | --------------------------------- |
+| Perform with limited precision, leading to rounding errors. | Perform exactly and store exactly |
+
+- SIMD (Single Instruction, Multiple Data): Modern CPUs can perform the same operation on multiple data points simultaneously by **vector operations** on floating-point numbers.
+- Multicore CPUs
+
+### C.2. Memory
+- Variables and data are stored in memory, with addresses pointing to their locations.
+  ```python
+  x = 42
+  print(id(x)) # Returns the memory address of the variable `x`.
+  ```
+- Copying multiple objects like arrays requires special care. Direct assignment creates a reference, not a new copy.
+- CPUs use a hierarchy of caches (L1, L2, L3) to reduce the latency of accessing frequently used data. A simulation involving repetitive calculations benefits from cache optimisation by keeping frequently accessed data closer to the CPU.
+
+### C.3. Supercomputers
+Supercomputers are high-performance systems used for large-scale simulations and computations.
+
+### C.4. Accelerators
+Accelerators like GPUs and TPUs are specialised hardware for parallel processing.
+- GPUs handles matrix and vector operations, crucial for simulations and ML tasks.
+- TPUs are optimised for NN computations.
+```python
+import torch
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+tensor = torch.tensor([1.0, 2.0, 3.0]).to(device)
+print(tensor) # runs computations on GPU if available.
+```
