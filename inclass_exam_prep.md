@@ -408,7 +408,7 @@ class Circle:
 - `compute_area` function is a (non-special) method of the class. Methods can have arguments and take another instance like `def compute_overlap(self, other_circle):`
 
 Using **Circle** class
-```
+```python
 # Import the Circle class from other file circle.py
 from circle import Circle
 
@@ -429,6 +429,67 @@ circle2.radius = circle1.radius
 
 Brainstorming process: what algorithm? -> what classes? -> what properties of class? -> what methods/types?
 
-## Workshop 3 mini-lecture
+## Workshop 3 mini-lecture: Numpy arrays
+Useful external modules:
+- numpy: core numerical tool
+- scipy: uses numpy, many algorithms for mathematical tasks
+- matplotlib: make plots
+
+Arrays
+```python
+a = np.array([4.4, 5.5, 6.6, 7.7])       # example
+x = np.zeros((100, 3))                   # 2D numpy array with 100 rows and 3 columns; initialised to 0.0; default dtype 'float'
+u = np.zeros((1200, 1600, 3))            # 3D numpy array with height 1200, width 1600, depth 3
+```
+
+|              |      list      |     array      |
+| ------------ | -------------- | -------------- |
+| support      | built-in []    | requires numpy |
+| indices      | one index (1D) | multiple       |
+| element type | can mix        | all the same   |
+| maths        | --             | many methods   |
+
+```python
+import numpy as np
+
+# ------- Creating arrays -------
+# makes array of ten 0.0s
+x = np.zeros(10)
+
+# creates 10x2 array, all 1
+y = np.ones((10,2))
+
+# 0.0, 1.0, 2.0, 3.0, 4.0
+z = np.arange(5.)
+
+# load a text file
+u = np.genfromtxt(filename)
+
+# ------- Accessing elements -------
+# pick out one element (0=first)
+a = x[5]
+
+# modify elements
+x[5] += 1
+x[0] = x[1] + x[2]
+
+# for higher dimensional arrays
+b = y[5, 1]
+
+# extract a whole column/row
+c = y[: , 0]
+
+# ------- Checking array size and shape -------
+print(x.size) # 10
+print(y.shape) # (10, 2)
+print(y.ndim) # 2
+
+# ------- Reshape -------
+a = x.reshape(20) # must maintain total size
+
+# ------- Maths with arrays (repeated contents are excluded) -------
+make_identity = np.identity(2)
+cross_product =  np.cross(a,b)
+```
 
 ## Workshop 4 mini-lecture
