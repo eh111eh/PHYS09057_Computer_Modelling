@@ -473,11 +473,11 @@ a = x[5]
 x[5] += 1
 x[0] = x[1] + x[2]
 
-# for higher dimensional arrays
+# accessing higher dimensional arrays
 b = y[5, 1]
 
 # extract a whole column/row
-c = y[: , 0]
+c = y[: , 0]      # select all rows, first column (index 0)
 
 # ------- Checking array size and shape -------
 print(x.size) # 10
@@ -492,4 +492,18 @@ make_identity = np.identity(2)
 cross_product =  np.cross(a,b)
 ```
 
-## Workshop 4 mini-lecture
+## Workshop 4 mini-lecture: Style
+Naming
+- Clear name of variables and functions, avoid ambiguity
+- Methods and functions lower case verbs, with underscores between words
+- Top-level constants in upper-case
+- Classes in CamelCase
+
+Mind spacing as well
+
+Code structure: DRY
+
+Comment Syntax: # and """Docstrings"""
+- # for ppl looking at the code itself.
+- Docstring for ppl using the code.
+- Avoid multi-inline commenting style
