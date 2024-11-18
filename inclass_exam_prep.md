@@ -503,7 +503,7 @@ Mind spacing as well
 
 Code structure: DRY
 
-Comment Syntax: # and """Docstrings"""
-- # for ppl looking at the code itself.
+Comment Syntax: `#` and """Docstrings"""
+- `#` for ppl looking at the code itself.
 - Docstring for ppl using the code.
 - Avoid multi-inline commenting style
